@@ -1,0 +1,252 @@
+syntax = "proto3";
+
+package enliven.agent.v1alpha1;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+import "google/rpc/status.proto";
+
+option go_package = "github.com/enliven-agent/core/agent/comms/grpc_adapter";
+option java_multiple_files = true;
+option java_package = "ai.enliven.agent.v1alpha1";
+option csharp_namespace = "Enliven.Agent.V1Alpha1";
+
+// ======================== Core Agent Service ========================
+service AgentService {
+  // Agent registration and discovery
+  rpc Register(RegistrationRequest) returns (RegistrationResponse) {}
+  rpc Heartbeat(stream HealthPing) returns (stream HealthPong) {}
+  
+  // Task orchestration
+  rpc SubmitTask(TaskRequest) returns (TaskAcknowledgement) {}
+  rpc StreamTasks(stream TaskProgress) returns (stream TaskDirective) {}
+  
+  // Distributed state management
+  rpc SyncState(StateSyncRequest) returns (StateSyncResponse) {}
+  rpc WatchState(StateFilter) returns (stream StateUpdate) {}
+  
+  // Emergency channel
+  rpc EmergencySignal(EmergencyAlert) returns (EmergencyAck) {}
+}
+
+// ======================== Data Structures ========================
+message AgentIdentity {
+  string agent_id = 1 [(required) = true];
+  string instance_hash = 2; // SHA256 of hardware fingerprint
+  string capability_profile = 3; // JSON schema of agent capabilities
+}
+
+message RegistrationRequest {
+  AgentIdentity identity = 1;
+  google.protobuf.Timestamp startup_time = 2;
+  map<string, string> metadata = 3; // Key-value pairs for extensions
+}
+
+message RegistrationResponse {
+  oneof response {
+    SuccessResult success = 1;
+    ErrorResult error = 2;
+  }
+  
+  message SuccessResult {
+    string cluster_id = 1;
+    google.protobuf.Duration heartbeat_interval = 2;
+    bytes auth_token = 3; // JWT signed by control plane
+  }
+  
+  message ErrorResult {
+    ErrorCode code = 1;
+    string message = 2;
+    google.rpc.Status status = 3; // gRPC standard error
+  }
+}
+
+// ======================== Health Monitoring ========================
+message HealthPing {
+  enum PingType {
+    UNSPECIFIED = 0;
+    LIVENESS = 1;
+    READINESS = 2;
+    LEADER_ELECTION = 3;
+  }
+  
+  AgentIdentity identity = 1;
+  PingType type = 2;
+  map<string, string> metrics = 3; // CPU/mem/network stats
+}
+
+message HealthPong {
+  enum SystemStatus {
+    GREEN = 0;
+    YELLOW = 1;
+    RED = 2;
+  }
+  
+  SystemStatus cluster_health = 1;
+  repeated string failed_components = 2;
+  google.protobuf.Timestamp next_ping = 3;
+}
+
+// ======================== Task Management ========================
+message TaskRequest {
+  string task_id = 1 [(required) = true];
+  string workflow_dag = 2; // JSON representation of DAG
+  map<string, bytes> payloads = 3; // Binary data shards
+  
+  enum Priority {
+    PRIORITY_UNSPECIFIED = 0;
+    PRIORITY_BACKGROUND = 1;
+    PRIORITY_STANDARD = 2;
+    PRIORITY_URGENT = 3;
+  }
+  Priority priority = 4;
+}
+
+message TaskAcknowledgement {
+  enum AckStatus {
+    ACCEPTED = 0;
+    QUEUED = 1;
+    REJECTED = 2;
+  }
+  
+  AckStatus status = 1;
+  google.protobuf.Timestamp estimated_start = 2;
+  string queue_position = 3; // Redis Sorted Set ID
+}
+
+message TaskProgress {
+  string task_id = 1;
+  oneof update {
+    Heartbeat heartbeat = 2;
+    Checkpoint checkpoint = 3;
+    ErrorResult error = 4;
+  }
+  
+  message Heartbeat {
+    google.protobuf.Timestamp timestamp = 1;
+  }
+  
+  message Checkpoint {
+    string checkpoint_id = 1;
+    bytes state_snapshot = 2; // Protocol Buffer binary
+  }
+}
+
+message TaskDirective {
+  enum Command {
+    PAUSE = 0;
+    RESUME = 1;
+    CANCEL = 2;
+    ROLLBACK = 3;
+    FORCE_CHECKPOINT = 4;
+  }
+  
+  Command command = 1;
+  map<string, string> parameters = 2;
+}
+
+// ======================== State Management ========================
+message StateSyncRequest {
+  enum SyncMode {
+    FULL = 0;
+    DELTA = 1;
+    REPAIR = 2;
+  }
+  
+  SyncMode mode = 1;
+  bytes state_checksum = 2; // SHA-512 hash
+  google.protobuf.Timestamp last_synced = 3;
+}
+
+message StateSyncResponse {
+  oneof content {
+    FullState full = 1;
+    DeltaState delta = 2;
+    RepairInstructions repair = 3;
+  }
+  
+  message FullState {
+    bytes serialized_state = 1;
+    google.protobuf.Timestamp valid_until = 2;
+  }
+  
+  message DeltaState {
+    repeated StateMutation mutations = 1;
+  }
+  
+  message RepairInstructions {
+    repeated string invalid_keys = 1;
+    bytes merkle_proof = 2;
+  }
+}
+
+message StateMutation {
+  string key = 1;
+  oneof operation {
+    bytes value = 2;
+    bool tombstone = 3;
+    int64 version = 4;
+  }
+}
+
+// ======================== Error Handling ========================
+enum ErrorCode {
+  ERROR_UNSPECIFIED = 0;
+  LEADER_RESIGNATION = 1;
+  QUORUM_LOST = 2;
+  STATE_DIVERGENCE = 3;
+  TASK_TIMEOUT = 4;
+  CAPABILITY_MISMATCH = 5;
+}
+
+message ErrorResult {
+  ErrorCode code = 1;
+  string message = 2;
+  bytes debug_info = 3; // Stack trace + context
+  google.protobuf.Timestamp occurrence_time = 4;
+}
+
+// ======================== Emergency Channel ========================
+message EmergencyAlert {
+  enum AlertLevel {
+    WARNING = 0;
+    CRITICAL = 1;
+    FATAL = 2;
+  }
+  
+  AlertLevel level = 1;
+  string trigger_event = 2;
+  bytes last_valid_state = 3;
+}
+
+message EmergencyAck {
+  enum ResponseType {
+    ACK = 0;
+    MITIGATION_IN_PROGRESS = 1;
+    ESCALATION_REQUIRED = 2;
+  }
+  
+  ResponseType response = 1;
+  google.protobuf.Duration estimated_resolution = 2;
+}
+
+// ======================== Streaming Extensions ========================
+message StateFilter {
+  repeated string key_prefixes = 1;
+  google.protobuf.Timestamp since = 2;
+  bool watch = 3;
+}
+
+message StateUpdate {
+  enum UpdateType {
+    PUT = 0;
+    DELETE = 1;
+    VERSION_CHANGE = 2;
+  }
+  
+  UpdateType type = 1;
+  string key = 2;
+  bytes value = 3;
+  int64 version = 4;
+  google.protobuf.Timestamp modification_time = 5;
+}
