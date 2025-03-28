@@ -1,4 +1,4 @@
-enliven-agent/
+Glimmer-AI/
 ├── .github/                   # GitHub Automation
 │   ├── workflows/             # CI/CD Pipelines
 │   │   ├── ci-pr.yml          # PR Validation: Unit Tests + Linting
