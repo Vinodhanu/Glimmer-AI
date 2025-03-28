@@ -1,4 +1,4 @@
-# Enliven AGENT - Industrial-Grade Autonomous Agent Framework
+# Glimmer-AI - Industrial-Grade Autonomous Agent Framework
 
 Build an enterprise-level AI agent operating system enabling cross-departmental and cross-system intelligent collaboration.
 
@@ -6,9 +6,9 @@ Build an enterprise-level AI agent operating system enabling cross-departmental 
 [![Kubernetes](https://img.shields.io/badge/Kubernetes-1.28+-326CE5)](https://kubernetes.io)
 [![SAFECode](https://img.shields.io/badge/SAFECode%20Certified-Level%203%20Secure-4B0082)](https://safecode.org)
 
-[![Twitter](https://img.shields.io/badge/Twitter-%231DA1F2.svg?logo=Twitter&logoColor=white)](https://twitter.com/EnlivenAGENT)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-%230A66C2.svg?logo=linkedin&logoColor=white)](https://linkedin.com/in/adityak123)
-[![Website](https://img.shields.io/badge/Website-000000?logo=Google-Chrome&logoColor=white)](https://enlivenagent.com/)
+[![Twitter](https://img.shields.io/badge/Twitter-%231DA1F2.svg?logo=Twitter&logoColor=white)](https://twitter.com/Glimmer_net)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-%230A66C2.svg?logo=linkedin&logoColor=white)](https://linkedin.com/in/max-f-reynolds)
+[![Website](https://img.shields.io/badge/Website-000000?logo=Google-Chrome&logoColor=white)](https://glimmer.agency/)
 
 ## Table of Contents
 1. [Core Architecture](#core-architecture)  
@@ -95,7 +95,7 @@ class AgentStateMachine(States):
 hybrid_reasoning:
   neural_components:
     - type: transformer
-      model: enliven-v4.2-lite
+      model: Glimmer-v4.2-lite
       precision: int8
       quantization: dynamic
   symbolic_components:
@@ -112,7 +112,7 @@ hybrid_reasoning:
 ```
 # security/crypto.tf
 module "hsm_integration" {
-  source = "enliven/hsm-k8s/aws"
+  source = "Glimmer/hsm-k8s/aws"
   
   tpm_attestation = {
     enforce_measured_boot  = true
@@ -141,7 +141,7 @@ terraform apply -var="deployment_model=ISA95_ZONED" \
 ```
 # prod/main.tf
 module "hyperscale" {
-  source = "enliven/hyperscale-aws/v5.3"
+  source = "Glimmer/hyperscale-aws/v5.3"
   
   cluster_autoscaling = {
     min_size        = 1000
